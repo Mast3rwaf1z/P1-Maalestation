@@ -1,9 +1,3 @@
-#include "Wire.h" // For I2C
-#include "LCD.h" // For LCD
-#include "LiquidCrystal_I2C.h" // Added library*
-//Set the pins on the I2C chip used for LCD connections
-//ADDR,EN,R/W,RS,D4,D5,D6,D7
-LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7); // 0x27 is the default I2C bus address
 //RTC
 //COx
 #define COpin A0
@@ -55,75 +49,7 @@ void setup() {
   Wire.begin();
   RTC.begin();
 
-}
 
-void printToLCD() {
-  DateTime now = RTC.now();
-  lcd.clear();
-  //Print CO value
-  lcd.setCursor(0, 0);
-  lcd.print("CO: "); 
-  lcd.print(ppm); 
-  lcd.print("ppm");
-  //Print CO2 value
-  lcd.setCursor(0, 1);
-  lcd.print("CO2: "); 
-  lcd.print(concentration); 
-  lcd.print("ppm");
-  //Print PM value
-  lcd.setCursor(0, 2);
-  lcd.print("PM: "); 
-  lcd.print(dustDensity); 
-  lcd.print("ppm");
-  //Print humidity percentage
-  lcd.setCursor(0, 3);
-  lcd.print("Humidity: "); 
-  lcd.print(humidity); 
-  lcd.print("%");
-  delay(2000); //Wait 2 seconds to display second screen
-  lcd.clear();
-  //Print temperature °C 
-  lcd.setCursor(0, 0);
-  lcd.print("Temperature: "); 
-  lcd.print(temperature); 
-  lcd.print("°C");
-  //Print heat index
-  lcd.setCursor(0, 1);
-  lcd.print("Heat index: "); 
-  lcd.print(HeatIndex);
-  //Print year, month, day
-  lcd.setCursor(0, 2);
-  lcd.print(now.day(), DEC); 
-  lcd.print("/"); 
-  lcd.print(now.month(), DEC); 
-  lcd.print("/"); 
-  lcd.print(now.year(), DEC);
-  //Print hour, minute, second
-  lcd.setCursor(0, 3);
-  lcd.setCursor(now.hour(), DEC); 
-  lcd.print(":"); 
-  lcd.print(now.minute(), DEC); 
-  lcd.print(":"); 
-  lcd.print(now.second(), DEC);
-  delay(2000); //Wait 2 seconds before looping around
-  /*
-    reading to display with name and unit:
-    reading     || name               || unit
-    CO          || ppm                || ppm
-    CO2         || concentration      || ppm
-    PM          || dustDensity        || ppm
-    Humidity    || humidity           || %
-    Temperature || temperature        || °C
-    Heat Index  || HeatIndex          ||
-    year        || now.year           || dd/mm/yyyy
-    month       || now.month          ||
-    date        || now.day            ||
-    hour        || now.hour           || hh:mm:ss
-    minute      || now.minute         ||
-    second      || now.second         ||
-  */
-
-}
 
 float CO() {
   sensorValueCO = analogRead(COpin);
@@ -254,6 +180,5 @@ void loop() {
   CO2();
   PM();
   thomas();
-  //printToLCD();
   printToSerial();
 }
