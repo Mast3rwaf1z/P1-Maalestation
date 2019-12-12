@@ -5,7 +5,6 @@
 //ADDR,EN,R/W,RS,D4,D5,D6,D7
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7); // 0x27 is the default I2C bus address
 //RTC
-#include <ArduinoLowPower.h>
 //COx
 #define COpin A0
 float RS_gas = 0;
@@ -256,6 +255,5 @@ void loop() {
   PM();
   thomas();
   //printToLCD();
-  //printToSerial();
-  LowPower.deepSleep(1000 * 60);
+  printToSerial();
 }
