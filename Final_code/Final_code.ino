@@ -79,20 +79,19 @@ float CO2() {
   }
 }
 
-float humidityF() {
-  humidity = dht.readHumidity();
-  temperature = dht.readTemperature() - 2;
-  HeatIndex = dht.computeHeatIndex(temperature, humidity, false);
-  if (isnan(humidity) || isnan(temperature)) {
-    return humidity = 0;
+float humidityTemp() {
+  humidity = dht.readHumidity(); //the dht sensor reads the humidity using the library
+  temperature = dht.readTemperature() - 2.3; //the dht sensor reads the humidity using the library
+  HeatIndex = dht.computeHeatIndex(temperature, humidity, false); //the dht sensor calculates heat index based on the temperature in celcius and humidity
+  if (isnan(humidity) || isnan(temperature)) { //if the sensor reads a null value on either the humidity or temperature
+    return humidity = 0; // sets the three values to zero
     return temperature = 0;
     return HeatIndex = 0;
   }
-  else if (temperature != tempdeclutter || humidity != humidity || Heatindexdeclutter != HeatIndex) {
+  else { //if the sensor reads an actual value, return all values
     return humidity; //%
     return temperature; //°C
     return HeatIndex;
-    tempdeclutter = temperature, humiditydeclutter = humidity, Heatindexdeclutter = HeatIndex;
   }
 }
 
@@ -177,7 +176,7 @@ void loop() {
   //CO();
   CO2();
   PM();
-  humidityF();
+  humidityTemp();
   printToSerial();
   delay(1000);
 }
